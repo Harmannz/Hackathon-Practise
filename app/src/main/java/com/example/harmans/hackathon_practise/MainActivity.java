@@ -8,24 +8,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    //tracks score
+    private int score = 0;
+    private final String NEGATIVE_ERROR = "Not allowed negatives";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override
@@ -49,4 +45,37 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void resetScore(View v){
+        score=0;
+        displayScore(score);
+    }
+
+    public void incrementScore(View v){
+        score++;
+        displayScore(score);
+    }
+
+    public void decrementScore(View v){
+        score--;
+        if(score < 0){
+            score = 0;
+            displaySnackBar(NEGATIVE_ERROR);
+        }
+        displayScore(score);
+
+    }
+
+    private void displaySnackBar(final String message){
+        Toast.makeText(this, message,
+                Toast.LENGTH_LONG).show();
+    }
+    /**
+     * Displays the given score.
+     */
+    private void displayScore(int score) {
+        TextView scoreView = (TextView) findViewById(R.id.score);
+        scoreView.setText(String.valueOf(score));
+    }
 }
+
